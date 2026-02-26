@@ -1,0 +1,64 @@
+# Refactored Food Ordering Features Implementation Plan
+
+This plan outlines the refactoring of the food browsing, cart management, and order placement features to strictly follow the project's established patterns: **Service Layer for logic, thin Controllers, and `asyncHandler` in Routes.**
+
+## User Review Required
+
+> [!IMPORTANT]
+> - Logic will be moved from Controllers to Services in `src/services/`.
+> - Controllers will be refactored to remove `try/catch` and `next(error)` calls.
+> - `asyncHandler` will be applied at the **Route** level, matching the `auth` pattern.
+> - Zod Validators will be added and applied via the `validate` middleware.
+
+## Proposed Changes
+
+### [Services]
+Create service files to handle business logic and database interactions.
+
+#### [NEW] [food.services.js](file:///home/mvrck/workspace/digital-kitchen/src/services/food.services.js)
+- `fetchAvailableFoods()`
+- `fetchFoodById(id)`
+
+#### [NEW] [cart.services.js](file:///home/mvrck/workspace/digital-kitchen/src/services/cart.services.js)
+- `getCartForUser(userId)`
+- `addItemToCart(userId, foodId, quantity)`
+- `removeItemFromCart(userId, foodId)`
+- `emptyCart(userId)`
+
+#### [NEW] [order.services.js](file:///home/mvrck/workspace/digital-kitchen/src/services/order.services.js)
+- `createOrderFromCart(userId, deliveryAddress)`
+- `fetchUserOrderHistory(userId)`
+- `fetchOrderById(userId, orderId)`
+
+---
+
+### [Validators]
+Define Zod schemas for request validation.
+
+#### [NEW] [food.validators.js](file:///home/mvrck/workspace/digital-kitchen/src/validators/food.validators.js)
+#### [NEW] [cart.validators.js](file:///home/mvrck/workspace/digital-kitchen/src/validators/cart.validators.js)
+#### [NEW] [order.validators.js](file:///home/mvrck/workspace/digital-kitchen/src/validators/order.validators.js)
+
+---
+
+### [Controllers]
+Refactor controllers to be thin wrappers around services.
+
+#### [MODIFY] [food.controller.js](file:///home/mvrck/workspace/digital-kitchen/src/controllers/food.controller.js)
+#### [MODIFY] [cart.controller.js](file:///home/mvrck/workspace/digital-kitchen/src/controllers/cart.controller.js)
+#### [MODIFY] [order.controller.js](file:///home/mvrck/workspace/digital-kitchen/src/controllers/order.controller.js)
+
+---
+
+### [Routes]
+Refactor routes to use `asyncHandler` and `validate` middleware.
+
+#### [MODIFY] [food.routes.js](file:///home/mvrck/workspace/digital-kitchen/src/routes/food.routes.js)
+#### [MODIFY] [cart.routes.js](file:///home/mvrck/workspace/digital-kitchen/src/routes/cart.routes.js)
+#### [MODIFY] [order.routes.js](file:///home/mvrck/workspace/digital-kitchen/src/routes/order.routes.js)
+
+## Verification Plan
+
+### Manual Verification
+- Verify that seeding still works.
+- Test all endpoints (Food, Cart, Orders) via `curl` to ensure the refactor preserves functionality and correctly handles validation/errors.

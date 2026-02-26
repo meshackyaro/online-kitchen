@@ -1,0 +1,53 @@
+# Enhanced Ordering Flow Implementation Plan
+
+This plan outlines adding complexity to the ordering flow to ensure data integrity and better order management.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - [createOrderFromCart](file:///home/mvrck/workspace/digital-kitchen/src/services/order.services.js#5-33) will now validate that each item is currently available in the [Food](file:///home/mvrck/workspace/digital-kitchen/src/services/food.services.js#8-15) model.
+> - [createOrderFromCart](file:///home/mvrck/workspace/digital-kitchen/src/services/order.services.js#5-33) will recalculate the total price based on the current database prices to prevent stale pricing.
+> - A new service and controller will be added to update the status of an order.
+
+## Proposed Changes
+
+### [Services]
+
+#### [MODIFY] [order.services.js](file:///home/mvrck/workspace/digital-kitchen/src/services/order.services.js)
+- Update [createOrderFromCart](file:///home/mvrck/workspace/digital-kitchen/src/services/order.services.js#5-33):
+    - Check `isAvailable` for each food item.
+    - Throw error if any item is unavailable.
+    - Explicitly calculate `totalAmount`.
+- Add `updateOrderStatus(userId, orderId, status)`:
+    - Update the status of an existing order.
+    - Only allow valid status transitions (optional, but good for "Preparing" -> "Out for Delivery", etc.).
+
+---
+
+### [Validators]
+
+#### [MODIFY] [order.validators.js](file:///home/mvrck/workspace/digital-kitchen/src/validators/order.validators.js)
+- Add `updateOrderStatusSchema`:
+    - Validate that the status is one of the allowed enum values.
+
+---
+
+### [Controllers]
+
+#### [MODIFY] [order.controller.js](file:///home/mvrck/workspace/digital-kitchen/src/controllers/order.controller.js)
+- Add `updateOrderStatusController`:
+    - Thin wrapper for `updateOrderStatus` service.
+
+---
+
+### [Routes]
+
+#### [MODIFY] [order.routes.js](file:///home/mvrck/workspace/digital-kitchen/src/routes/order.routes.js)
+- Add `PATCH /api/orders/:id/status` endpoint.
+
+## Verification Plan
+
+### Manual Verification
+- Attempt to place an order with an unavailable item (manually toggle `isAvailable` in DB).
+- Verify that the total price is correctly calculated.
+- Verify that order status can be updated.

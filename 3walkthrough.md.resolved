@@ -1,0 +1,37 @@
+# Food Ordering Features Walkthrough (Naira Updated)
+
+I have updated the system to use **Naira (₦)** for all price calculations and seed data.
+
+## Changes Made
+
+### Pricing & Currency
+
+- **Naira Support**: All prices in the seed data and order calculations now represent Naira values.
+- **Dynamic Calculation**: Total amounts are calculated using current Naira prices from the database.
+
+### API Endpoints
+
+- `GET /api/food`: Browse all available food.
+- `GET /api/cart`: View your cart.
+- `POST /api/cart/add`: Add an item to your cart.
+- `POST /api/orders`: Place an order (**Now with availability & price validation**).
+- `PATCH /api/orders/:id/status`: Update order status (Valid statuses: `Pending`, `Preparing`, `Out for Delivery`, `Delivered`, `Cancelled`).
+
+## How to Verify
+
+### 1. Test Availability Check
+
+1. Manually set a food item's `isAvailable` to `false` in the database.
+2. Attempt to place an order containing that item.
+3. The system should return a `400 Bad Request` with an error message: `Food item "..." is no longer available`.
+
+### 2. Test Status Update
+
+```bash
+curl -X PATCH http://localhost:8000/api/orders/<order_id>/status \
+-H "Authorization: Bearer <your_token>" \
+-H "Content-Type: application/json" \
+-d '{"status": "Preparing"}'
+```
+
+Valid status values: `Pending`, `Preparing`, `Out for Delivery`, `Delivered`, `Cancelled`.
