@@ -87,7 +87,44 @@ The application uses a centralized error-handling strategy:
 - `asyncHandler`: (Used in routes) Wraps asynchronous functions to catch errors and pass them to the global handler.
 - `error.middleware.js`: The final middleware that sends a formatted JSON response to the client.
 
-## 8. Development Workflow
+## 8. Environment Setup & Running
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v16+ recommended)
+- [MongoDB](https://www.mongodb.com/) account or local instance
+
+### Installation
+
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Configuration
+
+Create a `.env` file in the root directory and add the following variables:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_long_random_string
+JWT_EXPIRES_IN=7d
+```
+
+### Running the Project
+
+- **Production Mode**:
+  ```bash
+  npm start
+  ```
+- **Development Mode** (with nodemon):
+  ```bash
+  npm run dev
+  ```
+
+## 9. Development Workflow
 
 - **Validation**: All new endpoints should have corresponding Zod validators in `src/validators`.
 - **Logic**: Business logic must remain in `src/services`, not in controllers.
