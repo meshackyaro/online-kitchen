@@ -2,7 +2,12 @@
 
 ## 1. Project Overview
 
-**online-kitchen** (also referred to as Digital Kitchen) is a backend food ordering system built with a robust, scalable architecture. It handles user authentication, food menu management, cart operations, and order processing.
+**online-kitchen** (also referred to as Digital Kitchen) is a backend food ordering system built with a robust, scalable architecture. It provides a complete end-to-end solution for online food ordering, including:
+
+- **User Authentication & Management**: Secure registration and login using JWT, with role-based access control (User/Admin).
+- **Food Menu Management**: A dynamic menu system where admins can manage food items, categories, and availability.
+- **Cart Operations**: Real-time management of user carts, allowing items to be added, updated, or removed before checkout.
+- **Order Processing**: A structured ordering flow that validates item availability, calculates totals, and tracks order status from "Pending" to "Delivered".
 
 ## 2. Tech Stack
 
