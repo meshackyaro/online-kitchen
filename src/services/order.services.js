@@ -41,7 +41,6 @@ export const createOrderFromCart = async (userId, deliveryAddress) => {
         status: "Pending"
     });
 
-    // Clear cart after placing order
     cart.items = [];
     await cart.save();
 
@@ -61,8 +60,7 @@ export const fetchOrderById = async (userId, orderId) => {
 };
 
 export const updateOrderStatus = async (userId, orderId, status) => {
-    // Note: In a real app, only admins might update status, or users might cancel.
-    // For now, we allow the request to proceed if the order exists.
+
     const order = await Order.findOne({ _id: orderId, user: userId });
     if (!order) {
         throw new AppError("Order not found", 404);
